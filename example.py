@@ -14,7 +14,7 @@ import numpy as np
 
 #This line creates an aray of 101 numbers between -1 and 1. Each number is
 #equally spaced.
-trX = np.linespace(-1, 1, 101)
+trX = np.linspace(-1, 1, 101)
 #This is the output that we want for every input x. y = 2x + randomNumber*.33
 #since trx is a vector of 101 numbers, we need to make sure y is a vector of 101 inputs
 #2*x is a scalar times a vector so that is fine
@@ -30,9 +30,9 @@ Y = T.scalar()
 #this is the function that converts x to Y. w will fluctuate to minimize the error
 def model(X, w):
     return X*w
-y = model(X, y) #set y to always be the output to X*w
 #This is like T.scalar(). It allows w to work on both scalars and floats
 w = theano.shared(np.asarray(0., dtype=theano.config.floatX))
+y = model(X, w) #set y to always be the output to X*w
 
 cost = T.mean(T.sqr(y-Y)) #Error = cost = mean squared
 gradient = T.grad(cost=cost, wrt=w) #great thing about Theano is that we dont have to program derivatives
@@ -48,4 +48,4 @@ for i in range(100):
     for x, y in zip(trX, trY):
         train(x, y) #for every x y pair train.
 
-print w 
+print w
