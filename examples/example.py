@@ -8,6 +8,8 @@ Run it to check if you have your workspace set up.
 
 It trains the neural network to determine the m in a function y = mx + b
 """
+
+#AVI WAS HERE!!!!!
 import theano
 from theano import tensor as T
 import numpy as np
