@@ -1,3 +1,4 @@
+# python version > = 2.5
 import theano
 from theano import tensor as T
 import numpy as np
