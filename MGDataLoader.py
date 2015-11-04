@@ -20,7 +20,7 @@ try:
         srcDir = os.getcwd()
         libPath = srcDir +"/libedk.so.1.0.0"
         libEDK = CDLL(libPath)
-except
+except:
     print 'Error: cannot load dll lib'
 
 #DEFINE SIGNALS
@@ -78,7 +78,7 @@ print "Press '1' to start and connect to the EmoEngine                    "
 print "Press '2' to connect to the EmoComposer                            "
 print ">> "
 #Used by MGDataLoader
-def loadDataset():
+def loadDataset(): #use this to load the data for the neural network
     return (trainX, testX, trainY, testY, meta)
 
 if __name__ == "__main__":
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     print ">> "
     option = int(raw_input())
 
-
+    #Replace all this code, which just collects data from the headset, then store in a JSON file
     if option == 1:
         print libEDK.EE_EngineConnect("Emotiv Systems-5")
         if libEDK.EE_EngineConnect("Emotiv Systems-5") != 0:
@@ -120,7 +120,7 @@ if __name__ == "__main__":
                 libEDK.EE_DataAcquisitionEnable(userID,True)
                 readytocollect = True
 
-        if readytocollect==True:
+        if readytocollect==True: #add code for reading keyboard input and taking screenshots here
             libEDK.EE_DataUpdateHandle(0, hData)
             libEDK.EE_DataGetNumberOfSample(hData,nSamplesTaken)
             print "Updated :",nSamplesTaken[0]
@@ -135,10 +135,10 @@ if __name__ == "__main__":
                         libEDK.EE_DataGet(hData,targetChannelList[i],byref(arr), nSam)
                         print >>f,arr[sampleIdx],",",
                     print >>f,'\n'
-        time.sleep(0.2)
+        #time.sleep(0.2)
     libEDK.EE_DataFree(hData)
 
     #---------------------------------------------------------------------------------------------------------------------------------------------------------------
     libEDK.EE_EngineDisconnect()
     libEDK.EE_EmoStateFree(eState)
-    libEDK.EE_EmoEngineEventFree(eEvent)`
+    libEDK.EE_EmoEngineEventFree(eEvent)
