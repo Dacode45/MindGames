@@ -53,7 +53,7 @@ def model(X, w_h, w_h2, w_o, p_drop_input, p_drop_hidden):
 # teX = single test case of above
 # trY = #exambles by degrees off freedom= 4
 # teY = single test case of above
-trX, teX, trY, teY = loadDataset()
+trX, teX, trY, teY, meta = loadDataset()
 
 w_h = init_weights((14*39,200))
 w_h2 = init_weights((200,100))
