@@ -21,14 +21,27 @@ def CollectData(params, verb, deb):
     else:
         time.sleep(params['interval'])
     keyData = MGKeyLogger.StopLog()
-    emotiveData = MGEmotiveLogger.StopLog()
+    emotiveStateData, emotiveRawData = MGEmotiveLogger.StopLog()
 
-    nnInput, meta, params = formatData(keyData, emotiveData)
+    nnInput, meta, params = formatData(keyData, emotiveRawData, emotiveStateData)
     saveData(nnInput, meta, params)
     return (input, meta, nn_params)
 
 #format data so that emotive data and keyboard input is synced
-def formatData():
+def formatData(keyData, emotiveRawData):
+    synched = []
+    meta = {"img":[]}
+    k = 0
+    for i in range(0, len(keyData)):
+        kTimeStart  = keyData[i]['timestamp']
+        kTimeEnd = keyData[i+1]['timestamp']
+    for k in range(k, len(emotiveRawData)):
+        eTime = emotiveData[k]['timestamp']
+        if eTime >= kTimeStart and eTime < kTimeEnd
+            synched = {}
+        else
+            break
+
     return (nil, nil, params)
     pass
 
