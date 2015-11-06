@@ -53,15 +53,17 @@ def run(user, interval):
         'timestamp':now,
         'user':user
         }
-        with open(expDir+''+os.pathsep+'meta.json') as meta_file:
+        meta_file_name = expDir+''+os.pathsep+'meta.json'
+        with open(meta_file_name, 'w') as meta_file:
             json.dump(meta, meta_file)
         #empty for now
         info = {}
-        with open(imgDir+''+os.pathsep+'data.json') as data_file:
+        info_file_name = imgDir+''+os.pathsep+'data.json'
+        with open(info_file_name, 'w') as data_file:
             json.dump(info, data_file)
 
-    params = {'imgDir':imgDir, 'expNum':expNum, 'expDir':expDir, 'interval':interval, 'user':user, 'userID':userID, 'game':'BIT_TRIP'}
-    nnInput, nnMeta, nnParams = MGDataLoader.CollectData(params, VERBOSITY, DEBUG)
+    params = {'metaFile':meta_file_name, 'infoFile':info_file_name, 'imgDir':imgDir, 'expNum':expNum, 'expDir':expDir, 'interval':interval, 'user':user, 'userID':userID, 'game':'BIT_TRIP'}
+    nnInput, nnMeta = MGDataLoader.CollectData(params, VERBOSITY, DEBUG)
 
     nnTrainingData, currentNetwork = MGNeuralNet.Train(MGNeuralNet.Basic(), nnInput["training"], nnMeta, nnParams, VERBOSITY, DEBUG)
     nnTestData = MGNeuralNet.Test(currentNetwork, nnInput["testing"], nnMeta, nnParams, VERBOSITY, DEBUG)

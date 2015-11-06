@@ -18,16 +18,16 @@ def CollectData(params, verb, deb):
 
     MGKeyLogger.StartLog()
     MGEmotiveLogger.StartLog()
-    if not interval:
+    if not params["interval"]:
         raw_input('Enter Any Key to stop collectiong Data')
     else:
         time.sleep(params['interval'])
     keyData, imgData = MGKeyLogger.StopLog()
     emotiveStateData, emotiveRawData = MGEmotiveLogger.StopLog()
 
-    nnInput, meta, params = formatData(keyData, imgData, emotiveRawData, emotiveStateData)
-    saveData(nnInput, meta, params)
-    return (nnInput, meta, nn_params)
+    nnInput, meta = formatData(keyData, imgData, emotiveRawData, emotiveStateData)
+    saveData(nnInput, meta)
+    return (nnInput, meta)
 
 #format key data
 #todo get ascii mappings for bittrip
@@ -99,7 +99,7 @@ def formatData(keyData, imgData, emotiveRawData, emotiveStateData):
     synched = synchData(keyData, imgData, emotiveRawData, emotiveStateData)
     data = []
     for i in range (0, len(synched), SAMPLE_PER_SET):
-        data.append(Synched[i:i+SAMPLE_PER_SET])
+        data.append(synched[i:i+SAMPLE_PER_SET])
     #Currently prefer raw data to emotive state data
     nnData = {"testing":([],[]), "training":([],[])}
     meta = {}
@@ -122,13 +122,18 @@ def formatData(keyData, imgData, emotiveRawData, emotiveStateData):
             nnData["testing"][0].append(x)
             nnData["testing"][1].append(y)
 
-    return (nnData, nil, params)
-    pass
+
+    return (nnData, synched)
 
 #save data collected incase we need to redo
-def saveData(nnInput, meta, params):
-    
-    pass
+def saveData(nnInput, meta):
+    data = {}
+    with open(GLOBAL_PARAMS['infoFile'], "r") as data_file:
+        data = json.load(data_file)
+    data['NN_INPUT'] = nnData
+    data['NN_META'] = meta
+    with open(GLOBAL_PARAMS['infoFile'], 'w') as data_file:
+        json.dump(data, data_file)
 
 #save neuralnetwork to data.json
 def SaveNetwork(nnTrainingData, nnTestData, currentNetwork):

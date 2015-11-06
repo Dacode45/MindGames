@@ -56,7 +56,14 @@ def StartLog():
     t.start()
 
 def SaveRawData():
-    pass
+    data = {}
+    with open(GLOBAL_PARAMS['infoFile'], "r") as data_file:
+        data = json.load(data_file)
+    data['RAW_KEY_DATA'] = KEY_DATA
+    data['RAW_IMG_DATA'] = IMG_DATA
+    with open(GLOBAL_PARAMS['infoFile'], 'w') as data_file:
+        json.dump(data, data_file)
+
 def StopLog():
     STOP_COLLECTION = True
     time.sleep(.1)
