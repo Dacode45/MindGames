@@ -6,6 +6,7 @@ from msvcrt import getch
 import wx
 
 import datetime
+import time
 
 VERBOSITY = False
 DEBUG = False
@@ -31,12 +32,12 @@ IMG_DATA = []
 def Collector():
     while not STOP_COLLECTION:
         key = ord(getch())
-        time = datetime.datetime.now()
+        timestamp = datetime.datetime.now()
         #need to get keyboard input
         keyData = {'key':key, 'timestamp':time}
         if VERBOSITY:
-            logging.info('[%s] key:%s, timestamp:%s'%(__name__, key, time))
-        KEY_DATA.append({'key':key, 'timestamp':time})
+            logging.info('[%s] key:%s, timestamp:%s'%(__name__, key, timestamp))
+        KEY_DATA.append({'key':key, 'timestamp':timestamp})
 
         #get screenshot
         bmp = wx.EmptyBitmap(size[0], size[1])
@@ -47,8 +48,8 @@ def Collector():
         bmp.SaveFile(imgFile, wx.BITMAP_TYPE_PNG)
         if DEBUG:
             saveTime = datetime.datetime.now()
-            logging.debug('[%s] Saving File Took %s'%(__name__, time - saveTime))
-        IMG_DATA.append({'img':imgFile, 'timestamp':time})
+            logging.debug('[%s] Saving File Took %s'%(__name__, timestamp - saveTime))
+        IMG_DATA.append({'img':imgFile, 'timestamp':timestamp})
 
 def StartLog():
     t = threading.Thread(target=Collector)
@@ -56,4 +57,5 @@ def StartLog():
 
 def StopLog():
     STOP_COLLECTION = True
+    time.sleep(.1)
     return (KEY_DATA, IMG_DATA)

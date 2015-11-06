@@ -192,8 +192,9 @@ def Setup(params, verb, deb):
 STOP_COLLECTION = False
 
 EMO_DATA = []
+RAW_DATA = []
 
-def Collector():
+def EmoCollector():
     eEvent = EE_EmoEngineEventCreate()
     eState = EE_EmoStateCreate()
     while not STOP_COLLECTION:
@@ -211,15 +212,25 @@ def Collector():
         elif state != 0x600:
             print "Internal error in Emotive Engine"
 #special keys
+#avi fill this in
+def RawCollector():
+    while not STOP_COLLECTION:
+        time.sleep(.0078125) #may need to change to nanosleep
+        raw = SomeFuncGetRawData()
+        timestamp = datetime.datetime.now()
+        if VERBOSITY or DEBUG:
+            pass #log extra data
+        if DEBUG:
+            pass #log extra data
+        RAW_Data.append({'userID':USER_ID, 'raw':raw, 'timestamp':timestamp})
 
 
 def StartLog():
-    t = threading.Thread(target=Collector)
+    t = threading.Thread(target=EmoCollector)
+    t = threading.Thread(target=RawCollector)
     t.start()
 
 def StopLog():
     STOP_COLLECTION = True
-    libEDK.EE_EngineDisconnect()
-    libEDK.EE_EmoStateFree(eState)
-    libEDK.EE_EmoEngineEventFree(eEvent)
-    return (KEY_DATA, IMG_DATA)
+    time.sleep(.1)
+    return (EMO_DATA, RAW_DATA)

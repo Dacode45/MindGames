@@ -94,6 +94,7 @@ if __name__ == '__main__':
     if args.debug:
         print("debug turned on")
         DEBUG = True
+        VERBOSITY = True
 
     if args.run:
         run(args.user, args.runtime)

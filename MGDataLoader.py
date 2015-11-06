@@ -4,7 +4,7 @@ import MGEmotiveLogger
 
 VERBOSITY = False
 DEBUG = False
-GLOBAL_PARAMS
+GLOBAL_PARAMS = {}
 
 def CollectData(params, verb, deb):
     VERBOSITY = verb
