@@ -11,8 +11,6 @@ import time
 
 import json
 
-
-
 def GetDataList():
     data = {}
     with open('data/datalist.json') as data_list:
@@ -62,11 +60,11 @@ def run(user, interval):
         with open(imgDir+''+os.pathsep+'data.json') as data_file:
             json.dump(info, data_file)
 
-    params = {'imgDir':imgDir, 'expNum':expNum, 'expDir':expDir, 'interval':interval, 'user':user, 'userID':userID}
+    params = {'imgDir':imgDir, 'expNum':expNum, 'expDir':expDir, 'interval':interval, 'user':user, 'userID':userID, 'game':'BIT_TRIP'}
     nnInput, nnMeta, nnParams = MGDataLoader.CollectData(params, VERBOSITY, DEBUG)
 
-    nnTrainingData, currentNetwork = MGNeuralNet.Train(MGNeuralNet.Basic(), nnInput.training, nnMeta, nnParams, VERBOSITY, DEBUG)
-    nnTestData = MGNeuralNet.Test(currentNetwork, nnInput.testing, nnMeta, nnParams, VERBOSITY, DEBUG)
+    nnTrainingData, currentNetwork = MGNeuralNet.Train(MGNeuralNet.Basic(), nnInput["training"], nnMeta, nnParams, VERBOSITY, DEBUG)
+    nnTestData = MGNeuralNet.Test(currentNetwork, nnInput["testing"], nnMeta, nnParams, VERBOSITY, DEBUG)
     MGDataLoader.SaveNetwork(nnTrainingData, nnTestData, currentNetwork)
 
     MGVisualizer.Analyze(nnTestData, VERBOSITY, DEBUG)

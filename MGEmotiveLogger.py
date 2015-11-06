@@ -8,6 +8,7 @@ import logging
 import MGUtil
 
 import datetime
+import dateutil.parser
 
 VERBOSITY = False
 DEBUG = False
@@ -203,7 +204,7 @@ def EmoCollector():
         EE_EmoEngineEventGetUserId(eEvent, pointer(userID))
         if eventType == EE_EmoStateUpdated:
             EE_EmoEngineEventGetEmoState(eEvent, eState)
-            timestamp = ES_GetTimeFromStart(eState)
+            timestamp = dateutil.parser.parse(ES_GetTimeFromStart(eState))
             if VERBOSITY or DEBUG:
                 logging.Info("%10.3f New EmoState from user %d ...\r" % (timestamp, USER_ID)
             if DEBUG:
@@ -230,7 +231,11 @@ def StartLog():
     t = threading.Thread(target=RawCollector)
     t.start()
 
+def SaveRawData():
+    pass
+    
 def StopLog():
     STOP_COLLECTION = True
     time.sleep(.1)
+    SaveRawData()
     return (EMO_DATA, RAW_DATA)

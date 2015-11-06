@@ -55,7 +55,10 @@ def StartLog():
     t = threading.Thread(target=Collector)
     t.start()
 
+def SaveRawData():
+    pass
 def StopLog():
     STOP_COLLECTION = True
     time.sleep(.1)
+    SaveRawData()
     return (KEY_DATA, IMG_DATA)
